@@ -42,6 +42,15 @@ namespace Test_AI
             var result = 1.0 / (1.0 + Math.Pow(Math.E, -x));
             return result; 
         }
+
+        public void SetWeigths(params double[] weights)
+        {
+            for (int i = 0; i < weights.Length; i++)
+            {
+                Weights[i] = weights[i];
+            }
+        }
+
         public override string ToString()
         {
             return Output.ToString();

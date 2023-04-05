@@ -24,9 +24,43 @@ namespace Test_AI
             CreateOutputLayer();
         }
 
-        public double FeedForward(List<double> inputSignals)
+        public Neuron FeedForward(List<double> inputSignals)
         {
+            SendSignalsToInputNeurons(inputSignals);
+            FeedForwardAllLayerAfterInput();
+            if(Topology.OutputCount == 1)
+            {
+                return Layers.Last().Neurons[0];
+            }
+            else
+            {
+                return Layers.Last().Neurons.OrderByDescending(n => n.Output).First();
+            }
 
+        }
+
+        private void FeedForwardAllLayerAfterInput()
+        {
+            for (int i = 0; i < Layers.Count; i++)
+            {
+                var layer = Layers[i];
+                var previusLayerSignals = Layers[i - 1].GetSignals();
+
+                foreach (var neuron in layer.Neurons)
+                {
+                    neuron.FeedForward(previusLayerSignals);
+                }
+            }
+        }
+
+        private void SendSignalsToInputNeurons(List<double> inputSignals)
+        {
+            for (int i = 0; i < inputSignals.Count; i++)
+            {
+                var signal = new List<double> { inputSignals[i] };
+                var neuron = Layers[0].Neurons[i];
+                neuron.FeedForward(signal);
+            }
         }
 
         private void CreateOutputLayer()
