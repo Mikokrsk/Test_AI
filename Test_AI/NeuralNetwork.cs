@@ -24,7 +24,7 @@ namespace Test_AI
             CreateOutputLayer();
         }
 
-        public Neuron FeedForward(params double[] inputSignals)
+        public Neuron Predict(params double[] inputSignals)
         {
             SendSignalsToInputNeurons(inputSignals);
             FeedForwardAllLayerAfterInput();
@@ -128,7 +128,7 @@ namespace Test_AI
 
             private double Backpropagation(double expected , params double[] inputs)
         {
-            var actual = FeedForward(inputs).Output;
+            var actual = Predict(inputs).Output;
             var different = actual-expected;
 
             foreach (var neuron in Layers.Last().Neurons)
